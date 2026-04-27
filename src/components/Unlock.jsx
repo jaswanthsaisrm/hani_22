@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { FaLock, FaLockOpen, FaPause, FaPlay } from "react-icons/fa6";
 
@@ -7,41 +7,19 @@ export default function Unlock({ unlocked }) {
   const [revealed, setRevealed] = useState(false);
   const [playing, setPlaying] = useState(false);
 
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return undefined;
-    const stop = () => setPlaying(false);
-    audio.addEventListener("ended", stop);
-    audio.addEventListener("pause", stop);
-    return () => {
-      audio.removeEventListener("ended", stop);
-      audio.removeEventListener("pause", stop);
-    };
-  }, []);
-
-  function toggleAudio() {
+  function handleClick() {
     if (!unlocked) return;
-
+    setRevealed(true);
     const audio = audioRef.current;
     if (!audio) return;
-
-    if (!revealed) {
-      setRevealed(true);
-      audio.load();
-      audio
-        .play()
-        .then(() => setPlaying(true))
-        .catch(() => setPlaying(false));
-      return;
-    }
-
     if (audio.paused) {
       audio
         .play()
         .then(() => setPlaying(true))
-        .catch(() => setPlaying(false));
+        .catch(console.error);
     } else {
       audio.pause();
+      setPlaying(false);
     }
   }
 
@@ -68,9 +46,12 @@ export default function Unlock({ unlocked }) {
             : "Bloom a few flowers or open a couple of notes to unlock it."}
         </p>
 
+        {/* Audio always in DOM so ref is always valid */}
+        <audio ref={audioRef} src="/voice-note.mp3" preload="auto" />
+
         <motion.button
           type="button"
-          onClick={toggleAudio}
+          onClick={handleClick}
           disabled={!unlocked}
           className={`mx-auto mt-9 flex h-20 w-20 items-center justify-center rounded-full text-2xl shadow-soft transition ${
             unlocked ? "bg-rose-950 text-white" : "bg-white/80 text-rose-300"
@@ -89,15 +70,7 @@ export default function Unlock({ unlocked }) {
           transition={{ duration: 2.2, repeat: Infinity }}
           aria-label={unlocked ? "Play voice note" : "Voice note locked"}
         >
-          {unlocked ? (
-            revealed && playing ? (
-              <FaPause />
-            ) : (
-              <FaPlay />
-            )
-          ) : (
-            <FaLock />
-          )}
+          {unlocked ? playing ? <FaPause /> : <FaPlay /> : <FaLock />}
         </motion.button>
 
         {unlocked && (
@@ -112,15 +85,13 @@ export default function Unlock({ unlocked }) {
                 {revealed ? "voice note ready" : "tap to reveal the voice note"}
               </span>
             </div>
-
-            <audio
-              ref={audioRef}
-              className={revealed ? "mt-4 w-full" : "hidden"}
-              controls={revealed}
-              preload="auto"
-            >
-              <source src="/voice-note.mp3" type="audio/aac" />
-            </audio>
+            {revealed && (
+              <audio
+                src="/voice-note.mp3.mp3"
+                className="mt-4 w-full"
+                controls
+              />
+            )}
           </motion.div>
         )}
       </motion.div>
