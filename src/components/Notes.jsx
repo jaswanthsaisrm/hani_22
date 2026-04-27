@@ -5,22 +5,41 @@ const groups = [
   {
     title: "Things I noticed",
     notes: [
-      ["The way your eyes change when you are excited.", "I notice more than I say."],
-      ["How you make people feel included.", "It is one of your quiet superpowers."],
+      {
+        text: "The way your eyes change when you are excited.",
+        hidden: "I notice more than I say.",
+        image: "/sisters.jpeg",
+      },
+      {
+        text: "How you make people feel included.",
+        hidden: "It is one of your quiet superpowers.",
+      },
     ],
   },
   {
     title: "Things I like about you",
     notes: [
-      ["Your softness, even when the day is heavy.", "It makes the world less sharp."],
-      ["Your laugh when you forget to hold it back.", "That one stays with me."],
+      {
+        text: "Your softness, even when the day is heavy.",
+        hidden: "It makes the world less sharp.",
+      },
+      {
+        text: "Your laugh when you forget to hold it back.",
+        hidden: "That one stays with me.",
+      },
     ],
   },
   {
     title: "Things I never said",
     notes: [
-      ["You matter to me in small everyday ways.", "More than a birthday website can fit."],
-      ["I hope you choose yourself loudly this year.", "You deserve to be loved gently, including by you."],
+      {
+        text: "You matter to me in small everyday ways.",
+        hidden: "More than a birthday website can fit.",
+      },
+      {
+        text: "I hope you choose yourself loudly this year.",
+        hidden: "You deserve to be loved gently, including by you.",
+      },
     ],
   },
 ];
@@ -29,7 +48,6 @@ const rotations = [-4, 3, -2, 4, -3, 2];
 
 export default function Notes({ onOpenNote }) {
   const [active, setActive] = useState(null);
-  const flatNotes = groups.flatMap((group) => group.notes.map((note) => ({ group: group.title, note })));
 
   function openNote(item, index) {
     setActive({ ...item, index });
@@ -59,7 +77,7 @@ export default function Notes({ onOpenNote }) {
                   const index = groupIndex * 2 + noteIndex;
                   return (
                     <motion.button
-                      key={note[0]}
+                      key={note.text}
                       type="button"
                       onClick={() => openNote({ group: group.title, note }, index)}
                       className="min-h-72 rounded-sm bg-white p-4 text-left shadow-soft outline-none"
@@ -68,8 +86,16 @@ export default function Notes({ onOpenNote }) {
                       whileTap={{ scale: 0.98 }}
                       transition={{ type: "spring", stiffness: 220, damping: 18 }}
                     >
-                      <div className="mb-5 h-40 rounded-sm bg-gradient-to-br from-blush via-cream to-lavender" />
-                      <p className="font-display text-2xl leading-snug text-rose-950">{note[0]}</p>
+                      {note.image ? (
+                        <img
+                          src={note.image}
+                          alt="Sisters together"
+                          className="mb-5 h-40 w-full rounded-sm object-cover object-center"
+                        />
+                      ) : (
+                        <div className="mb-5 h-40 rounded-sm bg-gradient-to-br from-blush via-cream to-lavender" />
+                      )}
+                      <p className="font-display text-2xl leading-snug text-rose-950">{note.text}</p>
                     </motion.button>
                   );
                 })}
@@ -96,10 +122,18 @@ export default function Notes({ onOpenNote }) {
               transition={{ duration: 0.45, ease: "easeOut" }}
               onClick={(event) => event.stopPropagation()}
             >
-              <div className="mb-5 h-56 rounded-2xl bg-gradient-to-br from-lavender via-pink-100 to-cream" />
+              {active.note.image ? (
+                <img
+                  src={active.note.image}
+                  alt="Sisters together"
+                  className="mb-5 h-56 w-full rounded-2xl object-cover object-center"
+                />
+              ) : (
+                <div className="mb-5 h-56 rounded-2xl bg-gradient-to-br from-lavender via-pink-100 to-cream" />
+              )}
               <p className="text-xs uppercase tracking-[0.24em] text-rose-600/70">{active.group}</p>
-              <h3 className="mt-3 font-display text-3xl text-rose-950">{active.note[0]}</h3>
-              <p className="mt-5 text-lg leading-8 text-rose-900/78">{active.note[1]}</p>
+              <h3 className="mt-3 font-display text-3xl text-rose-950">{active.note.text}</h3>
+              <p className="mt-5 text-lg leading-8 text-rose-900/78">{active.note.hidden}</p>
               <button
                 type="button"
                 onClick={() => setActive(null)}
