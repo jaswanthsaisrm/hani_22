@@ -5,41 +5,44 @@ const groups = [
   {
     title: "Things I noticed",
     notes: [
-      {
-        text: "I love how naturally you care for people, always looking out for them, even in the smallest ways. It's something really special about you.",
-        hidden: "Best elder sibling one could get.",
-        image: "/sisters.jpeg",
-      },
-      {
-        text: "How you make people feel included.",
-        hidden: "It is one of your quiet superpowers.",
-      },
+      [
+        "I love how naturally you care for people always looking out for them, even in the smallest ways.",
+        "best elder sibling one could get",
+        "/sisters.jpeg",
+      ],
+      [
+        "How selflessly giving you are.",
+        "Learn how to take for once and dont settle anymore you are pushing 22.You are getting old nigga",
+        "/2ndNote.jpeg",
+      ],
     ],
   },
   {
-    title: "Things I like about you",
+    title: "You are special because",
     notes: [
-      {
-        text: "Your softness, even when the day is heavy.",
-        hidden: "It makes the world less sharp.",
-      },
-      {
-        text: "Your laugh when you forget to hold it back.",
-        hidden: "That one stays with me.",
-      },
+      [
+        "You do not let the world or your hardships put you down. You keep chasing your dreams and goals and you are so inspiring to me.",
+        "BADDIE WITH MOTION",
+        "/3rdNote.jpeg",
+      ],
+      [
+        "You have maxed out in all aspects in life from looks to personality to kindness to talents and thats just really rare.",
+        "if only you maxed out self control you wouldnt have embarrsed yourself in the bus",
+        "/4thNote.jpeg",
+      ],
     ],
   },
   {
     title: "Things I never said",
     notes: [
-      {
-        text: "You matter to me in small everyday ways.",
-        hidden: "More than a birthday website can fit.",
-      },
-      {
-        text: "I hope you choose yourself loudly this year.",
-        hidden: "You deserve to be loved gently, including by you.",
-      },
+      [
+        "I know you have been through a lot and I admire your strength and resilience.",
+        "You are stronger than you think.",
+      ],
+      [
+        "I hope you choose yourself loudly this year.",
+        "You deserve to be loved gently, including by you.",
+      ],
     ],
   },
 ];
@@ -47,21 +50,15 @@ const groups = [
 const rotations = [-4, 3, -2, 4, -3, 2];
 
 function getNoteData(note) {
-  if (Array.isArray(note)) {
-    const [text, hidden, image] = note;
-    return { text, hidden, image };
-  }
-
-  return note;
+  const [text, hidden, image] = note;
+  return { text, hidden, image };
 }
 
 export default function Notes({ onOpenNote }) {
   const [active, setActive] = useState(null);
-  const [showBack, setShowBack] = useState(false);
 
   function openNote(item, index) {
     setActive({ ...item, note: getNoteData(item.note), index });
-    setShowBack(false);
     onOpenNote();
   }
 
@@ -74,18 +71,21 @@ export default function Notes({ onOpenNote }) {
         viewport={{ once: true, amount: 0.18 }}
         transition={{ duration: 0.8 }}
       >
-        <h2 className="mx-auto max-w-3xl text-center font-display text-4xl leading-tight sm:text-5xl lg:text-6xl">
-          Small things I kept in my heart
-        </h2>
+        <p className="text-center text-sm uppercase tracking-[0.3em] text-rose-700/70">
+          notes of love
+        </p>
 
         <div className="mt-12 grid gap-9 lg:grid-cols-3 lg:gap-8">
           {groups.map((group, groupIndex) => (
             <div key={group.title}>
-              <h3 className="mb-5 text-center font-display text-2xl leading-tight text-rose-900">{group.title}</h3>
+              <h3 className="mb-5 text-center font-display text-2xl leading-tight text-rose-900">
+                {group.title}
+              </h3>
               <div className="grid items-start gap-7 sm:grid-cols-2 lg:grid-cols-1">
                 {group.notes.map((note, noteIndex) => {
                   const index = groupIndex * 2 + noteIndex;
                   const noteData = getNoteData(note);
+
                   return (
                     <motion.button
                       key={noteData.text}
@@ -95,13 +95,17 @@ export default function Notes({ onOpenNote }) {
                       style={{ rotate: rotations[index] }}
                       whileHover={{ y: -8, rotate: 0, scale: 1.02 }}
                       whileTap={{ scale: 0.98 }}
-                      transition={{ type: "spring", stiffness: 220, damping: 18 }}
+                      transition={{
+                        type: "spring",
+                        stiffness: 220,
+                        damping: 18,
+                      }}
                     >
                       {noteData.image ? (
                         <img
                           src={noteData.image}
-                          alt="Sisters together"
-                          className="mb-5 h-48 w-full shrink-0 rounded-sm object-cover object-[center_18%] sm:h-52 lg:h-44 xl:h-52"
+                          alt=""
+                          className="mb-5 h-48 w-full shrink-0 rounded-sm object-cover object-center sm:h-52 lg:h-44 xl:h-52"
                         />
                       ) : (
                         <div className="mb-5 h-32 shrink-0 rounded-sm bg-gradient-to-br from-blush via-cream to-lavender sm:h-36 lg:h-28 xl:h-36" />
@@ -135,53 +139,30 @@ export default function Notes({ onOpenNote }) {
               transition={{ duration: 0.45, ease: "easeOut" }}
               onClick={(event) => event.stopPropagation()}
             >
-              <AnimatePresence mode="wait">
-                {!showBack ? (
-                  <motion.div
-                    key="front"
-                    initial={{ opacity: 0, rotateY: -18 }}
-                    animate={{ opacity: 1, rotateY: 0 }}
-                    exit={{ opacity: 0, rotateY: 18 }}
-                    transition={{ duration: 0.32 }}
-                  >
-                    {active.note.image ? (
-                      <img
-                        src={active.note.image}
-                        alt="Sisters together"
-                        className="mb-5 h-60 w-full rounded-2xl object-cover object-[center_18%] sm:h-72"
-                      />
-                    ) : (
-                      <div className="mb-5 h-44 rounded-2xl bg-gradient-to-br from-lavender via-pink-100 to-cream sm:h-56" />
-                    )}
-                    <p className="text-xs uppercase tracking-[0.24em] text-rose-600/70">{active.group}</p>
-                    <h3 className="mt-3 font-display text-2xl leading-snug text-rose-950 sm:text-3xl">
-                      {active.note.text}
-                    </h3>
-                  </motion.div>
-                ) : (
-                  <motion.div
-                    key="back"
-                    className="grid min-h-[300px] place-items-center rounded-2xl bg-gradient-to-br from-cream via-pink-50 to-violet-50 px-5 py-8 text-center sm:min-h-[360px] sm:px-6 sm:py-10"
-                    initial={{ opacity: 0, rotateY: -18 }}
-                    animate={{ opacity: 1, rotateY: 0 }}
-                    exit={{ opacity: 0, rotateY: 18 }}
-                    transition={{ duration: 0.32 }}
-                  >
-                    <div>
-                      <p className="text-xs uppercase tracking-[0.24em] text-rose-600/70">the part I kept hidden</p>
-                      <p className="mt-6 font-display text-2xl leading-snug text-rose-950 sm:text-3xl">
-                        {active.note.hidden}
-                      </p>
-                    </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+              {active.note.image ? (
+                <img
+                  src={active.note.image}
+                  alt=""
+                  className="mb-5 h-60 w-full rounded-2xl object-cover object-center sm:h-72"
+                />
+              ) : (
+                <div className="mb-5 h-44 rounded-2xl bg-gradient-to-br from-lavender via-pink-100 to-cream sm:h-56" />
+              )}
+              <p className="text-xs uppercase tracking-[0.24em] text-rose-600/70">
+                {active.group}
+              </p>
+              <h3 className="mt-3 font-display text-2xl leading-snug text-rose-950 sm:text-3xl">
+                {active.note.text}
+              </h3>
+              <p className="mt-5 text-lg leading-8 text-rose-900/78">
+                {active.note.hidden}
+              </p>
               <button
                 type="button"
-                onClick={() => (showBack ? setActive(null) : setShowBack(true))}
+                onClick={() => setActive(null)}
                 className="mt-7 w-full rounded-full bg-rose-950 px-5 py-3 text-sm font-semibold text-white"
               >
-                {showBack ? "keep it close" : "turn it over"}
+                keep it close
               </button>
             </motion.article>
           </motion.div>

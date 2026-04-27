@@ -2,12 +2,12 @@ import React, { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 
 const messages = [
-  "You make ordinary moments feel softer.",
-  "Your smile has its own little gravity.",
+  "You make ordinary moments feel magical.",
+  "Your eyes have their own little gravity.",
   "I hope today feels as gentle as you are.",
-  "There is so much magic in the way you care.",
+  "There is so much magic in the way you love.",
   "Twenty two looks beautiful on you.",
-  "You deserve the kind of joy that stays.",
+  "You deserve the kind of love that stays.",
   "A tiny garden for every tiny reason you matter.",
 ];
 
@@ -44,7 +44,9 @@ function Flower({ index, revealed, onBloom }) {
       <motion.span
         className="relative block h-full w-full"
         initial={false}
-        animate={revealed ? { scale: 1, rotate: 0 } : { scale: 0.58, rotate: -14 }}
+        animate={
+          revealed ? { scale: 1, rotate: 0 } : { scale: 0.58, rotate: -14 }
+        }
         whileHover={{ scale: revealed ? 1.05 : 0.7 }}
         whileTap={{ scale: 0.9 }}
         transition={{ type: "spring", stiffness: 190, damping: 14 }}
@@ -53,7 +55,9 @@ function Flower({ index, revealed, onBloom }) {
           <span
             key={rotation}
             className="absolute left-1/2 top-1/2 h-12 w-7 origin-bottom rounded-full bg-gradient-to-b from-pink-200 to-fuchsia-300"
-            style={{ transform: `translate(-50%, -100%) rotate(${rotation}deg)` }}
+            style={{
+              transform: `translate(-50%, -100%) rotate(${rotation}deg)`,
+            }}
           />
         ))}
         <span className="absolute left-1/2 top-1/2 h-8 w-8 -translate-x-1/2 -translate-y-1/2 rounded-full bg-amber-200 shadow" />
@@ -93,8 +97,17 @@ export default function FlowerGarden({ onBloom }) {
           key={petal.id}
           className="absolute top-[-10%] h-4 w-3 rounded-full bg-pink-200/70"
           style={{ left: petal.left }}
-          animate={{ y: ["0vh", "118vh"], x: [0, 28, -18, 12], rotate: [0, 120, 260] }}
-          transition={{ duration: petal.duration, delay: petal.delay, repeat: Infinity, ease: "linear" }}
+          animate={{
+            y: ["0vh", "118vh"],
+            x: [0, 28, -18, 12],
+            rotate: [0, 120, 260],
+          }}
+          transition={{
+            duration: petal.duration,
+            delay: petal.delay,
+            repeat: Infinity,
+            ease: "linear",
+          }}
         />
       ))}
 
@@ -105,13 +118,22 @@ export default function FlowerGarden({ onBloom }) {
         viewport={{ once: true, amount: 0.35 }}
         transition={{ duration: 0.8 }}
       >
-        <p className="text-sm uppercase tracking-[0.3em] text-rose-700/70">a little garden</p>
-        <h2 className="mt-4 font-display text-4xl text-rose-950 sm:text-6xl">Tap where the flowers sleep</h2>
+        <p className="text-sm uppercase tracking-[0.3em] text-rose-700/70">
+          a little garden
+        </p>
+        <h2 className="mt-4 font-display text-4xl text-rose-950 sm:text-6xl">
+          Tap where the flowers sleep
+        </h2>
       </motion.div>
 
       <div className="relative mx-auto mt-10 h-[62vh] max-w-5xl rounded-[2rem] bg-white/25 shadow-soft backdrop-blur-sm">
         {messages.slice(0, visibleFlowers).map((_, index) => (
-          <Flower key={index} index={index} revealed={revealed.includes(index)} onBloom={revealNext} />
+          <Flower
+            key={index}
+            index={index}
+            revealed={revealed.includes(index)}
+            onBloom={revealNext}
+          />
         ))}
       </div>
     </section>
