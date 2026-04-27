@@ -63,8 +63,7 @@ export default function Notes({ onOpenNote }) {
         viewport={{ once: true, amount: 0.18 }}
         transition={{ duration: 0.8 }}
       >
-        <p className="text-center text-sm uppercase tracking-[0.3em] text-rose-700/70">notes of love</p>
-        <h2 className="mx-auto mt-4 max-w-3xl text-center font-display text-4xl sm:text-6xl">
+        <h2 className="mx-auto max-w-3xl text-center font-display text-4xl sm:text-6xl">
           Small things I kept in my heart
         </h2>
 
