@@ -6,8 +6,8 @@ const groups = [
     title: "Things I noticed",
     notes: [
       {
-        text: "The way your eyes change when you are excited.",
-        hidden: "I notice more than I say.",
+        text: "I love how naturally you care for people, always looking out for them, even in the smallest ways. It's something really special about you.",
+        hidden: "Best elder sibling one could get.",
         image: "/sisters.jpeg",
       },
       {
@@ -46,12 +46,21 @@ const groups = [
 
 const rotations = [-4, 3, -2, 4, -3, 2];
 
+function getNoteData(note) {
+  if (Array.isArray(note)) {
+    const [text, hidden, image] = note;
+    return { text, hidden, image };
+  }
+
+  return note;
+}
+
 export default function Notes({ onOpenNote }) {
   const [active, setActive] = useState(null);
   const [showBack, setShowBack] = useState(false);
 
   function openNote(item, index) {
-    setActive({ ...item, index });
+    setActive({ ...item, note: getNoteData(item.note), index });
     setShowBack(false);
     onOpenNote();
   }
@@ -76,9 +85,10 @@ export default function Notes({ onOpenNote }) {
               <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-1">
                 {group.notes.map((note, noteIndex) => {
                   const index = groupIndex * 2 + noteIndex;
+                  const noteData = getNoteData(note);
                   return (
                     <motion.button
-                      key={note.text}
+                      key={noteData.text}
                       type="button"
                       onClick={() => openNote({ group: group.title, note }, index)}
                       className="min-h-72 rounded-sm bg-white p-4 text-left shadow-soft outline-none"
@@ -87,16 +97,16 @@ export default function Notes({ onOpenNote }) {
                       whileTap={{ scale: 0.98 }}
                       transition={{ type: "spring", stiffness: 220, damping: 18 }}
                     >
-                      {note.image ? (
+                      {noteData.image ? (
                         <img
-                          src={note.image}
+                          src={noteData.image}
                           alt="Sisters together"
                           className="mb-5 h-52 w-full rounded-sm object-cover object-[center_18%]"
                         />
                       ) : (
                         <div className="mb-5 h-40 rounded-sm bg-gradient-to-br from-blush via-cream to-lavender" />
                       )}
-                      <p className="font-display text-2xl leading-snug text-rose-950">{note.text}</p>
+                      <p className="font-display text-2xl leading-snug text-rose-950">{noteData.text}</p>
                     </motion.button>
                   );
                 })}
