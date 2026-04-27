@@ -38,10 +38,12 @@ const groups = [
       [
         "I know you have been through a lot and I admire your strength and resilience.",
         "You are stronger than you think.",
+        "/5thNote.jpeg",
       ],
       [
         "I hope you choose yourself loudly this year.",
         "You deserve to be loved gently, including by you.",
+        "/6thNote.jpeg",
       ],
     ],
   },
@@ -90,7 +92,9 @@ export default function Notes({ onOpenNote }) {
                     <motion.button
                       key={noteData.text}
                       type="button"
-                      onClick={() => openNote({ group: group.title, note }, index)}
+                      onClick={() =>
+                        openNote({ group: group.title, note }, index)
+                      }
                       className="flex min-h-[21rem] flex-col rounded-sm bg-white p-4 text-left shadow-soft outline-none sm:min-h-[22rem] lg:min-h-[20rem]"
                       style={{ rotate: rotations[index] }}
                       whileHover={{ y: -8, rotate: 0, scale: 1.02 }}
@@ -102,11 +106,13 @@ export default function Notes({ onOpenNote }) {
                       }}
                     >
                       {noteData.image ? (
-                        <img
-                          src={noteData.image}
-                          alt=""
-                          className="mb-5 h-48 w-full shrink-0 rounded-sm object-cover object-center sm:h-52 lg:h-44 xl:h-52"
-                        />
+                        <div className="mb-5 flex h-48 w-full shrink-0 items-center justify-center overflow-hidden rounded-sm bg-gradient-to-br from-rose-50 via-cream to-violet-50 sm:h-52 lg:h-44 xl:h-52">
+                          <img
+                            src={noteData.image}
+                            alt=""
+                            className="h-full w-full object-contain"
+                          />
+                        </div>
                       ) : (
                         <div className="mb-5 h-32 shrink-0 rounded-sm bg-gradient-to-br from-blush via-cream to-lavender sm:h-36 lg:h-28 xl:h-36" />
                       )}
@@ -140,11 +146,13 @@ export default function Notes({ onOpenNote }) {
               onClick={(event) => event.stopPropagation()}
             >
               {active.note.image ? (
-                <img
-                  src={active.note.image}
-                  alt=""
-                  className="mb-5 h-60 w-full rounded-2xl object-cover object-center sm:h-72"
-                />
+                <div className="mb-5 flex h-60 w-full items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-br from-rose-50 via-cream to-violet-50 sm:h-72">
+                  <img
+                    src={active.note.image}
+                    alt=""
+                    className="h-full w-full object-contain"
+                  />
+                </div>
               ) : (
                 <div className="mb-5 h-44 rounded-2xl bg-gradient-to-br from-lavender via-pink-100 to-cream sm:h-56" />
               )}
