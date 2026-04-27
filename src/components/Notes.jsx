@@ -90,7 +90,7 @@ export default function Notes({ onOpenNote }) {
                         <img
                           src={note.image}
                           alt="Sisters together"
-                          className="mb-5 h-40 w-full rounded-sm object-cover object-center"
+                          className="mb-5 h-52 w-full rounded-sm object-cover object-[center_18%]"
                         />
                       ) : (
                         <div className="mb-5 h-40 rounded-sm bg-gradient-to-br from-blush via-cream to-lavender" />
@@ -126,7 +126,7 @@ export default function Notes({ onOpenNote }) {
                 <img
                   src={active.note.image}
                   alt="Sisters together"
-                  className="mb-5 h-56 w-full rounded-2xl object-cover object-center"
+                  className="mb-5 h-72 w-full rounded-2xl object-cover object-[center_18%]"
                 />
               ) : (
                 <div className="mb-5 h-56 rounded-2xl bg-gradient-to-br from-lavender via-pink-100 to-cream" />
