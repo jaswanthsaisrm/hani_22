@@ -48,9 +48,11 @@ const rotations = [-4, 3, -2, 4, -3, 2];
 
 export default function Notes({ onOpenNote }) {
   const [active, setActive] = useState(null);
+  const [showBack, setShowBack] = useState(false);
 
   function openNote(item, index) {
     setActive({ ...item, index });
+    setShowBack(false);
     onOpenNote();
   }
 
@@ -121,24 +123,51 @@ export default function Notes({ onOpenNote }) {
               transition={{ duration: 0.45, ease: "easeOut" }}
               onClick={(event) => event.stopPropagation()}
             >
-              {active.note.image ? (
-                <img
-                  src={active.note.image}
-                  alt="Sisters together"
-                  className="mb-5 h-72 w-full rounded-2xl object-cover object-[center_18%]"
-                />
-              ) : (
-                <div className="mb-5 h-56 rounded-2xl bg-gradient-to-br from-lavender via-pink-100 to-cream" />
-              )}
-              <p className="text-xs uppercase tracking-[0.24em] text-rose-600/70">{active.group}</p>
-              <h3 className="mt-3 font-display text-3xl text-rose-950">{active.note.text}</h3>
-              <p className="mt-5 text-lg leading-8 text-rose-900/78">{active.note.hidden}</p>
+              <AnimatePresence mode="wait">
+                {!showBack ? (
+                  <motion.div
+                    key="front"
+                    initial={{ opacity: 0, rotateY: -18 }}
+                    animate={{ opacity: 1, rotateY: 0 }}
+                    exit={{ opacity: 0, rotateY: 18 }}
+                    transition={{ duration: 0.32 }}
+                  >
+                    {active.note.image ? (
+                      <img
+                        src={active.note.image}
+                        alt="Sisters together"
+                        className="mb-5 h-72 w-full rounded-2xl object-cover object-[center_18%]"
+                      />
+                    ) : (
+                      <div className="mb-5 h-56 rounded-2xl bg-gradient-to-br from-lavender via-pink-100 to-cream" />
+                    )}
+                    <p className="text-xs uppercase tracking-[0.24em] text-rose-600/70">{active.group}</p>
+                    <h3 className="mt-3 font-display text-3xl text-rose-950">{active.note.text}</h3>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="back"
+                    className="grid min-h-[360px] place-items-center rounded-2xl bg-gradient-to-br from-cream via-pink-50 to-violet-50 px-6 py-10 text-center"
+                    initial={{ opacity: 0, rotateY: -18 }}
+                    animate={{ opacity: 1, rotateY: 0 }}
+                    exit={{ opacity: 0, rotateY: 18 }}
+                    transition={{ duration: 0.32 }}
+                  >
+                    <div>
+                      <p className="text-xs uppercase tracking-[0.24em] text-rose-600/70">the part I kept hidden</p>
+                      <p className="mt-6 font-display text-3xl leading-tight text-rose-950">
+                        {active.note.hidden}
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
               <button
                 type="button"
-                onClick={() => setActive(null)}
+                onClick={() => (showBack ? setActive(null) : setShowBack(true))}
                 className="mt-7 w-full rounded-full bg-rose-950 px-5 py-3 text-sm font-semibold text-white"
               >
-                keep it close
+                {showBack ? "keep it close" : "turn it over"}
               </button>
             </motion.article>
           </motion.div>
